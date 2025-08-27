@@ -13,7 +13,7 @@
     "url": "https://github.com/daideguchi/qoder-vscode-extension/issues"
   },
   "license": "MIT",
-  "icon": "images/icon-128.svg",
+  "icon": "images/icon.png",
   "galleryBanner": {
     "color": "#667EEA",
     "theme": "dark"

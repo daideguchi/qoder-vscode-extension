@@ -2,9 +2,9 @@
   "displayName": "Qoder - AI Development Agent",
   "description": "Next-generation AI development agent with quest mode, memory system, and auto-documentation",
   
-  "command.startQuest.title": "Start Quest (Spec-Driven Development)",
-  "command.generateWiki.title": "Generate Project Wiki (Repoki)",
-  "command.contextSearch.title": "Advanced Context Search",
+  "command.startQuest.title": "Start Quest (Works Anywhere - Global)",
+  "command.generateWiki.title": "Generate Project Wiki (Works Anywhere)",
+  "command.contextSearch.title": "Advanced Context Search (Global)",
   "command.showMemory.title": "Show Learning Memory",
   "command.inlineChat.title": "Inline AI Chat",
   "command.executeCodex.title": "Execute Codex Task",

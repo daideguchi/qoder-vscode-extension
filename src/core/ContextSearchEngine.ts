@@ -85,11 +85,11 @@ export class ContextSearchEngine {
         }
     }
 
-    async performSemanticSearch(query: string, options: Partial<SearchContext> = {}): Promise<void> {
+    async performSemanticSearch(query: string, workspacePath: string | null = null, options: Partial<SearchContext> = {}): Promise<void> {
         const searchContext: SearchContext = {
             query,
-            workspacePath: vscode.workspace.workspaceFolders?.[0]?.uri.fsPath || '',
-            scope: 'workspace',
+            workspacePath: workspacePath || vscode.workspace.workspaceFolders?.[0]?.uri.fsPath || '',
+            scope: workspacePath ? 'workspace' : 'file',
             includeExternal: true,
             useSemanticSearch: true,
             ...options
@@ -104,7 +104,10 @@ export class ContextSearchEngine {
                 const results: SearchResult[] = [];
 
                 // Step 1: Local code search
-                progress.report({ increment: 20, message: "Searching local codebase..." });
+                const localMessage = searchContext.workspacePath 
+                    ? "Searching local codebase..." 
+                    : "Searching current editor content...";
+                progress.report({ increment: 20, message: localMessage });
                 const localResults = await this.searchLocalCode(searchContext);
                 results.push(...localResults);
 
@@ -142,7 +145,33 @@ export class ContextSearchEngine {
     private async searchLocalCode(context: SearchContext): Promise<SearchResult[]> {
         const results: SearchResult[] = [];
         
-        if (!context.workspacePath) return results;
+        // If no workspace, search current editor content
+        if (!context.workspacePath) {
+            const activeEditor = vscode.window.activeTextEditor;
+            if (activeEditor) {
+                const content = activeEditor.document.getText();
+                const fileName = path.basename(activeEditor.document.fileName);
+                const matches = this.findContextualMatches(content, context.query);
+                
+                for (const match of matches) {
+                    results.push({
+                        id: `editor_${Date.now()}_${Math.random()}`,
+                        type: 'code',
+                        title: `${fileName}:${match.lineNumber}`,
+                        content: match.content,
+                        filePath: activeEditor.document.fileName,
+                        lineNumber: match.lineNumber,
+                        relevanceScore: match.score,
+                        context: {
+                            language: activeEditor.document.languageId,
+                            keywords: match.keywords
+                        },
+                        source: 'local'
+                    });
+                }
+            }
+            return results;
+        }
 
         try {
             // Use VS Code's built-in search capabilities

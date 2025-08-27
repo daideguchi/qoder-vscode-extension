@@ -2,9 +2,9 @@
   "displayName": "Qoder - AI開発エージェント",
   "description": "クエスト駆動開発、メモリシステム、自動ドキュメント化を備えた次世代AI開発エージェント",
   
-  "command.startQuest.title": "クエスト開始（仕様駆動開発）",
-  "command.generateWiki.title": "プロジェクトWiki生成（Repoki）",
-  "command.contextSearch.title": "高度なコンテキスト検索",
+  "command.startQuest.title": "クエスト開始（どこでも動作・グローバル）",
+  "command.generateWiki.title": "プロジェクトWiki生成（どこでも動作）",
+  "command.contextSearch.title": "高度なコンテキスト検索（グローバル）",
   "command.showMemory.title": "学習メモリを表示",
   "command.inlineChat.title": "インラインAIチャット",
   "command.executeCodex.title": "Codexタスクを実行",

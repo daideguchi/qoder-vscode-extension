@@ -79,37 +79,64 @@ function registerCommands(context: vscode.ExtensionContext) {
         }
     });
 
-    // Generate Wiki (Repoki)
+    // Generate Wiki (Repoki) - Works globally
     const generateWikiCommand = vscode.commands.registerCommand('qoder.generateWiki', async () => {
         try {
             const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
+            let targetPath: string;
+
             if (workspaceFolder) {
-                await vscode.window.withProgress({
-                    location: vscode.ProgressLocation.Notification,
-                    title: "Generating Project Wiki...",
-                    cancellable: false
-                }, async (progress) => {
-                    await wikiGenerator.generateProjectWiki(workspaceFolder.uri.fsPath, progress);
-                });
-                vscode.window.showInformationMessage('📚 Project Wiki generated successfully!');
+                // Use existing workspace
+                targetPath = workspaceFolder.uri.fsPath;
             } else {
-                vscode.window.showWarningMessage('Please open a workspace to generate wiki');
+                // No workspace - let user choose directory or create new project
+                const choice = await vscode.window.showQuickPick([
+                    'Select existing directory to analyze',
+                    'Create wiki for new project (choose location)'
+                ], {
+                    placeHolder: 'No workspace open. Choose how to proceed:'
+                });
+
+                if (!choice) return;
+
+                const folderUri = await vscode.window.showOpenDialog({
+                    canSelectFiles: false,
+                    canSelectFolders: true,
+                    canSelectMany: false,
+                    openLabel: choice.includes('Select') ? 'Analyze This Directory' : 'Create Project Here'
+                });
+
+                if (!folderUri || folderUri.length === 0) return;
+                targetPath = folderUri[0].fsPath;
             }
+
+            await vscode.window.withProgress({
+                location: vscode.ProgressLocation.Notification,
+                title: "Generating Project Wiki...",
+                cancellable: false
+            }, async (progress) => {
+                await wikiGenerator.generateProjectWiki(targetPath, progress);
+            });
+            
+            vscode.window.showInformationMessage('📚 Project Wiki generated successfully!');
         } catch (error) {
             vscode.window.showErrorMessage(`Wiki generation failed: ${error}`);
         }
     });
 
-    // Context Search
+    // Context Search - Works globally
     const contextSearchCommand = vscode.commands.registerCommand('qoder.contextSearch', async () => {
         try {
             const query = await vscode.window.showInputBox({
-                prompt: 'Enter search query',
-                placeHolder: 'Search across codebase with semantic understanding...'
+                prompt: 'Enter search query (works globally)',
+                placeHolder: 'Search across codebase, memory, and external sources...'
             });
 
             if (query) {
-                await contextSearch.performSemanticSearch(query);
+                const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
+                const searchPath = workspaceFolder?.uri.fsPath || null;
+                
+                await contextSearch.performSemanticSearch(query, searchPath);
             }
         } catch (error) {
             vscode.window.showErrorMessage(`Context search failed: ${error}`);

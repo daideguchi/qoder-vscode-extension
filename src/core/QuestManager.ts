@@ -54,9 +54,9 @@ export class QuestManager {
             return;
         }
 
-        // Step 1: Get user input for quest description
+        // Step 1: Get user input for quest description (works globally)
         const questInput = await vscode.window.showInputBox({
-            prompt: 'Describe what you want to develop',
+            prompt: 'Describe what you want to develop (works anywhere)',
             placeHolder: 'e.g., Create a REST API for user authentication with JWT tokens',
             ignoreFocusOut: true
         });
@@ -65,6 +65,10 @@ export class QuestManager {
             return;
         }
 
+        // Get optional workspace context (null if no workspace)
+        const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
+        const workspacePath = workspaceFolder?.uri.fsPath || null;
+
         // Step 2: Show progress while generating spec
         await vscode.window.withProgress({
             location: vscode.ProgressLocation.Notification,
@@ -72,12 +76,12 @@ export class QuestManager {
             cancellable: false
         }, async (progress) => {
             try {
-                // Generate specification using AI
+                // Generate specification using AI (global capable)
                 progress.report({ increment: 30, message: "Generating specification..." });
-                const spec = await this.generateSpecification(questInput);
+                const spec = await this.generateSpecification(questInput, workspacePath);
                 
                 progress.report({ increment: 50, message: "Breaking down into tasks..." });
-                const tasks = await this.generateTasks(spec);
+                const tasks = await this.generateTasks(spec, workspacePath);
                 
                 progress.report({ increment: 20, message: "Creating quest..." });
                 
@@ -103,16 +107,20 @@ export class QuestManager {
         });
     }
 
-    private async generateSpecification(input: string): Promise<{
+    private async generateSpecification(input: string, workspacePath: string | null): Promise<{
         title: string;
         description: string;
         requirements: string[];
     }> {
         if (!this.openai) throw new Error('OpenAI not initialized');
 
+        const contextNote = workspacePath 
+            ? `\nCurrent workspace: ${workspacePath}\n(Consider existing project structure if applicable)`
+            : '\n(No workspace context - generating standalone specification)';
+
         const prompt = `You are a senior software architect. Based on the user's request, create a detailed technical specification.
 
-User Request: "${input}"
+User Request: "${input}"${contextNote}
 
 Please provide a response in JSON format with:
 - title: A concise project title
@@ -123,7 +131,8 @@ Focus on:
 1. Technical accuracy and feasibility
 2. Best practices and modern standards
 3. Clear, actionable requirements
-4. Consideration of the current workspace context
+4. Universal applicability (should work in any environment)
+5. Standalone implementation capability
 
 Response must be valid JSON.`;
 
@@ -144,20 +153,24 @@ Response must be valid JSON.`;
         }
     }
 
-    private async generateTasks(spec: { title: string; description: string; requirements: string[] }): Promise<QuestTask[]> {
+    private async generateTasks(spec: { title: string; description: string; requirements: string[] }, workspacePath: string | null): Promise<QuestTask[]> {
         if (!this.openai) throw new Error('OpenAI not initialized');
+
+        const pathContext = workspacePath 
+            ? `\nWorkspace path: ${workspacePath}\nGenerate file paths relative to this workspace.`
+            : '\nNo specific workspace - generate generic/portable file structure that works anywhere.';
 
         const prompt = `You are a senior developer creating a task breakdown structure.
 
 Project: ${spec.title}
 Description: ${spec.description}
-Requirements: ${spec.requirements.join('\n- ')}
+Requirements: ${spec.requirements.join('\n- ')}${pathContext}
 
 Create a detailed task breakdown in JSON format. Each task should have:
 - id: unique identifier
 - title: clear, actionable title
 - description: detailed description of what needs to be done
-- filePaths: estimated file paths that will be created/modified
+- filePaths: suggested file paths (generic if no workspace, specific if workspace provided)
 - dependencies: array of task IDs that must be completed first
 
 Tasks should be:
@@ -165,6 +178,8 @@ Tasks should be:
 2. Granular enough to be completed in 1-4 hours each
 3. Include setup, implementation, testing, and documentation tasks
 4. Follow best practices for the technology stack
+5. Be executable in any environment (with or without specific workspace)
+6. Include clear setup instructions when needed
 
 Response must be valid JSON array of tasks.`;
 
