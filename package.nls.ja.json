@@ -1,0 +1,30 @@
+{
+  "displayName": "Qoder - AI開発エージェント",
+  "description": "クエスト駆動開発、メモリシステム、自動ドキュメント化を備えた次世代AI開発エージェント",
+  
+  "command.startQuest.title": "クエスト開始（仕様駆動開発）",
+  "command.generateWiki.title": "プロジェクトWiki生成（Repoki）",
+  "command.contextSearch.title": "高度なコンテキスト検索",
+  "command.showMemory.title": "学習メモリを表示",
+  "command.inlineChat.title": "インラインAIチャット",
+  "command.executeCodex.title": "Codexタスクを実行",
+  "command.executeSuperClaude.title": "SuperClaudeコマンドを実行",
+  "command.generateMedia.title": "メディア生成（Canva/CapCut）",
+  "command.ddStatus.title": "DDシステム状態",
+  
+  "category.qoder": "Qoder",
+  "category.qoderDD": "Qoder DD",
+  
+  "view.questView.name": "アクティブクエスト",
+  "view.memoryView.name": "学習メモリ",
+  
+  "config.title": "Qoder設定",
+  "config.openai.apiKey": "AI機能用のOpenAI APIキー",
+  "config.memory.enabled": "継続学習メモリを有効にする",
+  "config.autoWiki.enabled": "自動Wiki生成を有効にする",
+  "config.contextSearch.includeExternal": "外部検索ソースを含める",
+  "config.quest.autoApprove": "シンプルなクエストを自動承認",
+  "config.dd.systemPath": "dd統一システムのパス",
+  "config.dd.enableCodex": "Codex統合を有効にする",
+  "config.dd.enableSuperClaude": "SuperClaude統合を有効にする"
+}

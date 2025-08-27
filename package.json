@@ -1,0 +1,189 @@
+{
+  "name": "qoder-vscode-extension",
+  "displayName": "%displayName%",
+  "description": "%description%",
+  "version": "1.0.0",
+  "publisher": "dd-dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/daideguchi/qoder-vscode-extension.git"
+  },
+  "homepage": "https://github.com/daideguchi/qoder-vscode-extension",
+  "bugs": {
+    "url": "https://github.com/daideguchi/qoder-vscode-extension/issues"
+  },
+  "license": "MIT",
+  "icon": "images/icon-128.svg",
+  "galleryBanner": {
+    "color": "#667EEA",
+    "theme": "dark"
+  },
+  "keywords": [
+    "ai",
+    "development",
+    "agent",
+    "qoder",
+    "quest",
+    "memory",
+    "documentation",
+    "codex",
+    "superclaude",
+    "dd-system"
+  ],
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other",
+    "AI",
+    "Documentation"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "qoder.startQuest",
+        "title": "%command.startQuest.title%",
+        "category": "%category.qoder%"
+      },
+      {
+        "command": "qoder.generateWiki",
+        "title": "%command.generateWiki.title%",
+        "category": "%category.qoder%"
+      },
+      {
+        "command": "qoder.contextSearch",
+        "title": "%command.contextSearch.title%",
+        "category": "%category.qoder%"
+      },
+      {
+        "command": "qoder.showMemory",
+        "title": "%command.showMemory.title%",
+        "category": "%category.qoder%"
+      },
+      {
+        "command": "qoder.inlineChat",
+        "title": "%command.inlineChat.title%",
+        "category": "%category.qoder%"
+      },
+      {
+        "command": "qoder.executeCodex",
+        "title": "%command.executeCodex.title%",
+        "category": "%category.qoderDD%"
+      },
+      {
+        "command": "qoder.executeSuperClaude",
+        "title": "%command.executeSuperClaude.title%",
+        "category": "%category.qoderDD%"
+      },
+      {
+        "command": "qoder.generateMedia",
+        "title": "%command.generateMedia.title%",
+        "category": "%category.qoderDD%"
+      },
+      {
+        "command": "qoder.ddStatus",
+        "title": "%command.ddStatus.title%",
+        "category": "%category.qoderDD%"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "qoder.startQuest",
+        "key": "cmd+e",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "qoder.inlineChat",
+        "key": "cmd+i",
+        "when": "editorTextFocus"
+      }
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "qoder.questView",
+          "name": "%view.questView.name%",
+          "when": "qoder.hasActiveQuests"
+        },
+        {
+          "id": "qoder.memoryView",
+          "name": "%view.memoryView.name%",
+          "when": "qoder.memoryEnabled"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "%config.title%",
+      "properties": {
+        "qoder.openai.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "%config.openai.apiKey%"
+        },
+        "qoder.memory.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "%config.memory.enabled%"
+        },
+        "qoder.autoWiki.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "%config.autoWiki.enabled%"
+        },
+        "qoder.contextSearch.includeExternal": {
+          "type": "boolean",
+          "default": true,
+          "description": "%config.contextSearch.includeExternal%"
+        },
+        "qoder.quest.autoApprove": {
+          "type": "boolean",
+          "default": false,
+          "description": "%config.quest.autoApprove%"
+        },
+        "qoder.dd.systemPath": {
+          "type": "string",
+          "default": "/Users/dd",
+          "description": "%config.dd.systemPath%"
+        },
+        "qoder.dd.enableCodex": {
+          "type": "boolean",
+          "default": true,
+          "description": "%config.dd.enableCodex%"
+        },
+        "qoder.dd.enableSuperClaude": {
+          "type": "boolean",
+          "default": true,
+          "description": "%config.dd.enableSuperClaude%"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^14.1.2",
+    "@types/node": "18.x",
+    "@types/vscode": "^1.85.0",
+    "@typescript-eslint/eslint-plugin": "^6.15.0",
+    "@typescript-eslint/parser": "^6.15.0",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "chokidar": "^3.5.3",
+    "markdown-it": "^14.0.0",
+    "openai": "^4.28.0",
+    "sqlite3": "^5.1.6"
+  }
+}

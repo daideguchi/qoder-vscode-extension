@@ -1,0 +1,59 @@
+out
+node_modules
+.vscode-test/
+*.vsix
+.DS_Store
+*.log
+.env
+.nyc_output
+coverage
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Dependencies
+node_modules/
+jspm_packages/
+
+# Build outputs
+out/
+dist/
+
+# VS Code
+.vscode/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Memory system database
+qoder-memory.db
+*.db
+*.sqlite
+*.sqlite3
+
+# Test coverage
+coverage/
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

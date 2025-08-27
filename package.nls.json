@@ -1,0 +1,30 @@
+{
+  "displayName": "Qoder - AI Development Agent",
+  "description": "Next-generation AI development agent with quest mode, memory system, and auto-documentation",
+  
+  "command.startQuest.title": "Start Quest (Spec-Driven Development)",
+  "command.generateWiki.title": "Generate Project Wiki (Repoki)",
+  "command.contextSearch.title": "Advanced Context Search",
+  "command.showMemory.title": "Show Learning Memory",
+  "command.inlineChat.title": "Inline AI Chat",
+  "command.executeCodex.title": "Execute Codex Task",
+  "command.executeSuperClaude.title": "Execute SuperClaude Command",
+  "command.generateMedia.title": "Generate Media (Canva/CapCut)",
+  "command.ddStatus.title": "DD System Status",
+  
+  "category.qoder": "Qoder",
+  "category.qoderDD": "Qoder DD",
+  
+  "view.questView.name": "Active Quests",
+  "view.memoryView.name": "Learning Memory",
+  
+  "config.title": "Qoder Configuration",
+  "config.openai.apiKey": "OpenAI API Key for AI features",
+  "config.memory.enabled": "Enable continuous learning memory",
+  "config.autoWiki.enabled": "Enable automatic wiki generation",
+  "config.contextSearch.includeExternal": "Include external search sources",
+  "config.quest.autoApprove": "Auto-approve simple quests",
+  "config.dd.systemPath": "Path to dd unified system",
+  "config.dd.enableCodex": "Enable Codex integration",
+  "config.dd.enableSuperClaude": "Enable SuperClaude integration"
+}
